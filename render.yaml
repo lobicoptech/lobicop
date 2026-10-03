@@ -1,0 +1,25 @@
+# Render Blueprint — déploiement déclaratif de LOBICOP alternative (NZELA GLOBAL).
+# Documentation : https://render.com/docs/blueprint-spec
+#
+# Ce fichier permet un déploiement reproductible via "New +" → "Blueprint"
+# dans le tableau de bord Render, une fois ce dépôt poussé sur GitHub/GitLab.
+#
+# Variante par défaut : plan "starter" (payant, ~7 $/mois) avec un disque
+# persistant pour data/ (comptes, boutiques créées, bases SQLite). Pour la
+# version gratuite (sans persistance des données), voir les instructions
+# dans DEPLOY.md.
+services:
+  - type: web
+    name: nzela-lobicop
+    runtime: python
+    plan: starter
+    buildCommand: "true"
+    startCommand: "python3 server/main.py"
+    healthCheckPath: /api/health
+    envVars:
+      - key: NZELA_HOST
+        value: 0.0.0.0
+    disk:
+      name: nzela-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
